@@ -9,7 +9,7 @@ class LoginScreen extends Component {
     return (
       <View>
         <Text>Login Screen!</Text>
-        <Text>{authenticated}</Text>
+        <Text>Auth: {authenticated ? 'yes' : 'no'}</Text>
       </View>
     );
   }
