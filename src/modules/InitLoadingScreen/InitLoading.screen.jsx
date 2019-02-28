@@ -14,7 +14,7 @@ class InitLoadingScreen extends Component {
   render() {
     return (
       <View>
-        <Text>Loading...</Text>;
+        <Text>Loading...</Text>
       </View>
     );
   }

@@ -1,8 +1,8 @@
 import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 
-import InitLoadingScreen from '../../modules/InitLoadingScreen/InitLoading.screen';
-
 import MainTabNavigatorComponent from './MainTabNavigator.component';
+
+import InitLoadingScreen from '../../modules/InitLoadingScreen/InitLoading.screen';
 
 import AuthStackNavigatorComponent from './AuthNavigator.component';
 
@@ -17,7 +17,7 @@ export default createAppContainer(
     },
     {
       // options
-      initialRouteName: InitLoadingScreen,
+      initialRouteName: INIT_LOADING_SCREEN,
       // mode: 'modal',
       // headerMode: 'none',
     }

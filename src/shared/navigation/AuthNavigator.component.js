@@ -14,5 +14,6 @@ export default createStackNavigator(
     // options
     mode: 'modal',
     headerMode: 'none',
+    initialRouteName: LOGIN_SCREEN,
   }
 );
