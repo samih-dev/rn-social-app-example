@@ -1,7 +1,10 @@
 export const AUTH = 'AUTH';
 export const MAIN_TABS = 'MAIN_TABS';
 
+export const INIT_LOADING_SCREEN = 'INIT_LOADING_SCREEN';
+
 export const LOGIN_SCREEN = 'LOGIN_SCREEN';
-export const NEWS_FEED_SCREEN = 'NEWS_FEED_SCREEN';
-export const POST_FEED_SCREEN = 'PostsFeedScreen';
-export const INIT_LOADING_SCREEN = 'InitLoadingScreen';
+
+export const POSTS_FEED_SCREEN = 'POSTS_FEED_SCREEN';
+export const FRIENDS_SCREEN = 'FRIENDS_SCREEN';
+export const PROFILE_SCREEN = 'PROFILE_SCREEN';

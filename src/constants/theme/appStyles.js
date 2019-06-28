@@ -1,7 +1,5 @@
 import { AppColors } from './appColors';
 
-// import { AppColors } from './appColors';
-
 const AppStyle = {
   HeaderIconSize: 25,
   HeaderStyles: {

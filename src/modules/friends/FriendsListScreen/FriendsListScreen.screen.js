@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
-import { Text } from 'react-native';
+import { View, Text } from 'react-native';
 
 class FriendsListScreen extends Component {
   render() {
-    return <Text>FriendsListScreen !</Text>;
+    return (
+      <View>
+        <Text>FriendsListScreen!</Text>
+      </View>
+    );
   }
 }
 

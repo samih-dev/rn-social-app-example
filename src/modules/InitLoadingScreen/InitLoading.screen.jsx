@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 import { connect } from 'react-redux';
 
-// MAIN_TABS
-import { AUTH } from '../../constants/screenNames';
+// MAIN_TABS, AUTH
+import { MAIN_TABS } from '../../constants/screenNames';
 
 class InitLoadingScreen extends Component {
   componentDidMount() {
     const { navigation } = this.props;
-    navigation.navigate(AUTH);
+    navigation.navigate(MAIN_TABS);
   }
 
   render() {
