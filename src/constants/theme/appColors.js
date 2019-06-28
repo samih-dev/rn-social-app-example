@@ -9,8 +9,8 @@ const Blue = '#2c7fb2';
 
 const AppColors = {
   // sectins colors
-  HeaderColor: '#7FAFC1',
-  HeaderTextColor: White,
+  headerColor: '#7FAFC1',
+  headerTextColor: White,
   HeaderIconColor: White,
 
   ActionSaveBg: GreenLight,

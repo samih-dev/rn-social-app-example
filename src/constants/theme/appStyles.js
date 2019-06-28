@@ -1,25 +1,21 @@
+import { StyleSheet } from 'react-native';
 import { AppColors } from './appColors';
 
 const AppStyle = {
-  HeaderIconSize: 25,
-  HeaderStyles: {
-    backgroundColor: AppColors.HeaderColor,
+  headerIconSize: 25,
+  headerStyles: {
+    backgroundColor: AppColors.headerColor,
     height: 50,
   },
-  HeaderTextStyle: {
-    color: AppColors.HeaderTextColor,
+  headerTextStyle: {
+    color: AppColors.headerTextColor,
     fontSize: 18,
   },
 
-  ScreenContentTopPadding: 5,
-  ScreenContentLeftPadding: 5,
-
-  ScreenBottomActions: {
-    text: {
-      color: AppColors.White,
-    },
+  screenContent: {
+    padding: 8,
   },
-
+  // #region general actions
   ActionEdit: {
     container: {
       backgroundColor: AppColors.Orange,
@@ -46,6 +42,11 @@ const AppStyle = {
       color: AppColors.ScreenLinkColor,
     },
   },
-};
+  // #region general actions
+}; // AppStyle
 
-export { AppStyle };
+const screenMainContentSS = StyleSheet.create({
+  styles: AppStyle.screenContent,
+});
+
+export { AppStyle, screenMainContentSS };

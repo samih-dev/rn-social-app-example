@@ -74,7 +74,7 @@ const tabsMainNavigator = createBottomTabNavigator(
 
 const mainStackNavDefaultOptions = {
   headerStyle: {
-    backgroundColor: AppColors.HeaderColor,
+    backgroundColor: AppColors.headerColor,
   },
   headerTintColor: AppColors.White,
   headerTitleStyle: {
