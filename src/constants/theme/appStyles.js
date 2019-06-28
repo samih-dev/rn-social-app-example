@@ -14,6 +14,7 @@ const AppStyle = {
 
   screenContent: {
     padding: 8,
+    flex: 1,
   },
   // #region general actions
   ActionEdit: {
