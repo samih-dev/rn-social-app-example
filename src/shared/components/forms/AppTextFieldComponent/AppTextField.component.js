@@ -2,21 +2,25 @@ import React from 'react';
 import { View, Text, TextInput } from 'react-native';
 import PropTypes from 'prop-types';
 
+import { FormInputWrap } from '../../layout';
+
 import styles from './AppTextField.styles';
 
 const AppTextField = ({ config: { label, textType, onChange } }) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.label}>{label}</Text>
-      <TextInput
-        style={styles.ipt}
-        textContentType={textType}
-        placeholder={label}
-        placeholderTextColor="#9a73ef"
-        autoCapitalize="none"
-        onChangeText={onChange}
-      />
-    </View>
+    <FormInputWrap>
+      <View style={styles.container}>
+        <Text style={styles.label}>{label}</Text>
+        <View style={styles.ipt}>
+          <TextInput
+            textContentType={textType}
+            placeholder="..."
+            autoCapitalize="none"
+            onChangeText={onChange}
+          />
+        </View>
+      </View>
+    </FormInputWrap>
   );
 };
 

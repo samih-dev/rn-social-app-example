@@ -10,12 +10,13 @@ export default StyleSheet.create({
   },
   label: {
     flex: 0,
-    backgroundColor: AppColors.Red,
-    color: AppColors.White,
+    backgroundColor: AppColors.mainColor,
+    color: AppColors.white,
     padding: 8,
+    borderRadius: 5,
   },
   ipt: {
-    margin: 3,
     flex: 1,
+    marginLeft: 3,
   },
 });

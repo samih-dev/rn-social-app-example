@@ -37,10 +37,10 @@ const AppStyle = {
 
   ActionScreenLink: {
     text: {
-      color: AppColors.ScreenLinkColor,
+      color: AppColors.screenLinkColor,
     },
     icon: {
-      color: AppColors.ScreenLinkColor,
+      color: AppColors.screenLinkColor,
     },
   },
   // #region general actions

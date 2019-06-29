@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 import { AppTextField } from '../../../shared/components/forms';
-
-import { screenMainContentSS } from '../../../constants/theme';
+import { Card } from '../../../shared/components/layout';
+import { ActionButton } from '../../../shared/components/buttons';
 
 import styles from './LoginScreen.styles';
 
@@ -13,25 +14,45 @@ class LoginScreen extends Component {
     super(props);
 
     this.iptUserNameConfig = {
-      label: 'username',
+      label: 'User Name',
       onChange: value => this.onIptChange('username', value),
     };
 
     this.iptPasswordConfig = {
-      label: 'password',
+      label: 'Password',
       onChange: value => this.onIptChange('password', value),
     };
+
+    this.cardStyleOpts = StyleSheet.create({
+      container: {
+        width: '80%',
+      },
+    });
   }
 
   onIptChange = (fieldName, value) => {
     // todo change the rdx store
   };
 
+  loginOrRegister = () => {};
+
   render() {
     return (
-      <View style={[screenMainContentSS.styles, styles.container]}>
-        <AppTextField style={styles.ipt} config={this.iptUserNameConfig} />
-        <AppTextField style={styles.ipt} config={this.iptPasswordConfig} />
+      <View style={styles.container}>
+        <Card styleOpts={this.cardStyleOpts}>
+          <AppTextField style={styles.ipt} config={this.iptUserNameConfig} />
+          <AppTextField style={styles.ipt} config={this.iptPasswordConfig} />
+
+          <View style={styles.btn}>
+            <ActionButton
+              config={{
+                icon: 'arrow-forward',
+                label: 'Login',
+                onPress: this.loginOrRegister,
+              }}
+            ></ActionButton>
+          </View>
+        </Card>
       </View>
     );
   }

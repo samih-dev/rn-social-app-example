@@ -83,7 +83,7 @@ apply from: "../../node_modules/react-native/react.gradle"
 * using material icons for now 
 */
 project.ext.vectoricons = [
-    iconFontNames: ['MaterialIcons.ttf']
+    iconFontNames: ['Ionicons.ttf']
 ]
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 
