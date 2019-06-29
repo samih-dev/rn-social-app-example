@@ -19,7 +19,8 @@
     "no-unused-vars": ["error", { "args": "none" }],
     "react/prefer-stateless-function": [0],
     "import/prefer-default-export": "off",
-    "react/prop-types": ["error", { "ignore": ["navigation"] }]
+    "react/prop-types": ["error", { "ignore": ["navigation"] }],
+    "no-use-before-define": [2, { "functions": false }]
   },
   "plugins": ["prettier"]
 }

@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-import { AppTextField } from '../../../shared/components/forms';
+import { AppTextField, FormHint } from '../../../shared/components/forms';
 import { Card } from '../../../shared/components/layout';
 import { ActionButton } from '../../../shared/components/buttons';
+import { Loader } from '../../../shared/components/misc';
+import { POSTS_FEED_SCREEN } from '../../../constants/screenNames';
+
+import { loginUser, fieldValueChange, setFormSubmitted } from '../../../shared/redux/authRdx';
 
 import styles from './LoginScreen.styles';
 
@@ -30,20 +35,45 @@ class LoginScreen extends Component {
   }
 
   onIptChange = (fieldName, value) => {
-    // todo change the rdx store
+    const { onFieldValueChange } = this.props;
+    onFieldValueChange(fieldName, value);
   };
 
-  loginOrRegister = () => {};
+  loginOrRegister = () => {
+    const { navigation, form, doLoginUser, doSetFormSubmitted } = this.props;
+
+    if (form.valid) {
+      doLoginUser();
+
+      setTimeout(() => {
+        navigation.navigate(POSTS_FEED_SCREEN);
+      }, 3000);
+    } else {
+      doSetFormSubmitted(true);
+    }
+  };
 
   render() {
+    const { pending, form } = this.props;
+
+    if (pending) {
+      return <Loader />;
+    }
+
+    const { username, password, submitted } = form;
+
     return (
       <View style={styles.container}>
         <Card styleOpts={this.cardStyleOpts}>
           <View style={styles.txtLoginRegister}>
             <Text>Login | Register</Text>
           </View>
+
           <AppTextField style={styles.ipt} config={this.iptUserNameConfig} />
+          {submitted && !username && <FormHint config={{ message: 'please provide a username' }} />}
+
           <AppTextField style={styles.ipt} config={this.iptPasswordConfig} />
+          {submitted && !password && <FormHint config={{ message: 'please provide a password' }} />}
 
           <View style={styles.btn}>
             <ActionButton
@@ -60,25 +90,37 @@ class LoginScreen extends Component {
   }
 }
 
+LoginScreen.propTypes = {
+  onFieldValueChange: PropTypes.func.isRequired,
+  doLoginUser: PropTypes.func.isRequired,
+  doSetFormSubmitted: PropTypes.func.isRequired,
+
+  pending: PropTypes.bool.isRequired,
+  form: PropTypes.shape({
+    username: PropTypes.string.isRequired,
+    password: PropTypes.string.isRequired,
+    submitted: PropTypes.bool.isRequired,
+    valid: PropTypes.bool.isRequired,
+  }).isRequired,
+};
+
 function mapStateToProps(state) {
   const {
-    authReducer: { authenticated },
+    auth: { authenticated, pending, form },
   } = state;
 
   return {
     authenticated,
+    pending,
+    form,
   };
 }
 
-LoginScreen.propTypes = {
-  // authenticated: PropTypes.bool,
-};
-
-LoginScreen.defaultProps = {
-  authenticated: false,
-};
-
 export default connect(
   mapStateToProps,
-  null
+  {
+    doLoginUser: loginUser,
+    onFieldValueChange: fieldValueChange,
+    doSetFormSubmitted: setFormSubmitted,
+  }
 )(LoginScreen);

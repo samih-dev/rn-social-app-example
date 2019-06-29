@@ -67,6 +67,9 @@ const tabsMainNavigator = createBottomTabNavigator(
     tabBarOptions: {
       activeTintColor: AppColors.Blue,
       inactiveTintColor: AppColors.Black,
+      style: {
+        backgroundColor: AppColors.lightWhite,
+      },
       // showLabel: false,
     },
   }
