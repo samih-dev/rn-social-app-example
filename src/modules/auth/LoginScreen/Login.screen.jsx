@@ -24,6 +24,7 @@ class LoginScreen extends Component {
 
     this.iptPasswordConfig = {
       label: 'Password',
+      textType: 'password',
       onChange: value => this.onIptChange('password', value),
     };
 
@@ -74,10 +75,12 @@ class LoginScreen extends Component {
               {submitted && !username && (
                 <FormHint config={{ message: 'please provide a username' }} />
               )}
+
               <AppTextField style={styles.ipt} config={this.iptPasswordConfig} />
               {submitted && !password && (
                 <FormHint config={{ message: 'please provide a password' }} />
               )}
+
               <View style={styles.btn}>
                 <ActionButton
                   config={{

@@ -13,6 +13,7 @@ const AppTextField = ({ config: { label, textType, onChange } }) => {
         <Text style={styles.label}>{label}</Text>
         <View style={styles.ipt}>
           <TextInput
+            secureTextEntry={textType === 'password'}
             textContentType={textType}
             placeholder="..."
             autoCapitalize="none"

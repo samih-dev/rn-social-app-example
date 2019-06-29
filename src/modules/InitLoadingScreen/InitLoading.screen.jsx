@@ -1,22 +1,21 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
 import { connect } from 'react-redux';
 
 // MAIN_TABS, AUTH
-import { AUTH } from '../../constants/screenNames';
+import { AUTH, MAIN_TABS } from '../../constants/screenNames';
+
+import { Loader } from '../../shared/components/misc';
 
 class InitLoadingScreen extends Component {
   componentDidMount() {
     const { navigation } = this.props;
-    navigation.navigate(AUTH);
+    setTimeout(() => {
+      navigation.navigate(AUTH);
+    }, 3000);
   }
 
   render() {
-    return (
-      <View>
-        <Text>Loading...</Text>
-      </View>
-    );
+    return <Loader message="pelase wait..." />;
   }
 }
 
