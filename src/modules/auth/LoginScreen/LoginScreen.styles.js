@@ -6,6 +6,11 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  loaderContainer: {
+    height: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   txtLoginRegister: {
     width: '100%',
     flexDirection: 'row',

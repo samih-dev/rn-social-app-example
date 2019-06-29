@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
+import PropTypes from 'prop-types';
 import { AppColors } from '../../../../constants/theme';
 
 const styles = StyleSheet.create({
@@ -10,10 +11,19 @@ const styles = StyleSheet.create({
   },
 });
 
-const Loader = () => (
+const Loader = ({ message }) => (
   <View style={styles.container}>
+    <Text>{message}</Text>
     <ActivityIndicator size="large" color={AppColors.blue} />
   </View>
 );
+
+Loader.propTypes = {
+  message: PropTypes.string,
+};
+
+Loader.defaultProps = {
+  message: '',
+};
 
 export { Loader };

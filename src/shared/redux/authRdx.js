@@ -35,6 +35,7 @@ export default function authReducer(state = INIT_STATE, { type, payload }) {
 
 function onLogin(prevState) {
   const state = cloneDeep(prevState);
+  state.pending = true;
   return state;
 }
 

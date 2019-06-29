@@ -56,34 +56,39 @@ class LoginScreen extends Component {
   render() {
     const { pending, form } = this.props;
 
-    if (pending) {
-      return <Loader />;
-    }
-
     const { username, password, submitted } = form;
 
     return (
       <View style={styles.container}>
         <Card styleOpts={this.cardStyleOpts}>
-          <View style={styles.txtLoginRegister}>
-            <Text>Login | Register</Text>
-          </View>
-
-          <AppTextField style={styles.ipt} config={this.iptUserNameConfig} />
-          {submitted && !username && <FormHint config={{ message: 'please provide a username' }} />}
-
-          <AppTextField style={styles.ipt} config={this.iptPasswordConfig} />
-          {submitted && !password && <FormHint config={{ message: 'please provide a password' }} />}
-
-          <View style={styles.btn}>
-            <ActionButton
-              config={{
-                icon: 'arrow-forward',
-                label: 'Login',
-                onPress: this.loginOrRegister,
-              }}
-            ></ActionButton>
-          </View>
+          {pending ? (
+            <View style={styles.loaderContainer}>
+              <Loader message="entering..." />
+            </View>
+          ) : (
+            <View>
+              <View style={styles.txtLoginRegister}>
+                <Text>Login | Register</Text>
+              </View>
+              <AppTextField style={styles.ipt} config={this.iptUserNameConfig} />
+              {submitted && !username && (
+                <FormHint config={{ message: 'please provide a username' }} />
+              )}
+              <AppTextField style={styles.ipt} config={this.iptPasswordConfig} />
+              {submitted && !password && (
+                <FormHint config={{ message: 'please provide a password' }} />
+              )}
+              <View style={styles.btn}>
+                <ActionButton
+                  config={{
+                    icon: 'arrow-forward',
+                    label: 'Login',
+                    onPress: this.loginOrRegister,
+                  }}
+                ></ActionButton>
+              </View>
+            </View>
+          )}
         </Card>
       </View>
     );
