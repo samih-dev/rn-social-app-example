@@ -6,6 +6,12 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  txtLoginRegister: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 15,
+  },
   ipt: {},
   btn: {
     marginTop: 15,

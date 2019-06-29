@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
-import Icon from 'react-native-vector-icons/Ionicons';
 
 import { AppTextField } from '../../../shared/components/forms';
 import { Card } from '../../../shared/components/layout';
@@ -40,6 +39,9 @@ class LoginScreen extends Component {
     return (
       <View style={styles.container}>
         <Card styleOpts={this.cardStyleOpts}>
+          <View style={styles.txtLoginRegister}>
+            <Text>Login | Register</Text>
+          </View>
           <AppTextField style={styles.ipt} config={this.iptUserNameConfig} />
           <AppTextField style={styles.ipt} config={this.iptPasswordConfig} />
 

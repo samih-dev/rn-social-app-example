@@ -14,6 +14,7 @@ export default StyleSheet.create({
     color: AppColors.white,
     padding: 8,
     borderRadius: 5,
+    width: '40%',
   },
   ipt: {
     flex: 1,
