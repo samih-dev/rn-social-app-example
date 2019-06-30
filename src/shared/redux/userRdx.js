@@ -19,4 +19,12 @@ export default (state = INIT_STATE, { type, payload }) => {
 // #endregion reducer
 
 // #region actions createors
+export function setUserDetails(username) {
+  return {
+    type: USER_SET_DETAILS,
+    payload: {
+      username,
+    },
+  };
+}
 // #endregion actions createors

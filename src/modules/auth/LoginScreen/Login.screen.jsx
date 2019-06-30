@@ -9,7 +9,13 @@ import { ActionButton } from '../../../shared/components/buttons';
 import { Loader } from '../../../shared/components/misc';
 import { POSTS_FEED_SCREEN } from '../../../constants/screenNames';
 
-import { loginUser, fieldValueChange, setFormSubmitted } from '../../../shared/redux/authRdx';
+import {
+  loginUser as doLoginUser,
+  fieldValueChange,
+  setFormSubmitted,
+} from '../../../shared/redux/authRdx';
+
+import { setUserDetails as doSetUserDetails } from '../../../shared/redux/userRdx';
 
 import styles from './LoginScreen.styles';
 
@@ -41,12 +47,13 @@ class LoginScreen extends Component {
   };
 
   loginOrRegister = () => {
-    const { navigation, form, doLoginUser, doSetFormSubmitted } = this.props;
+    const { navigation, form, loginUser, doSetFormSubmitted, setUserDetails } = this.props;
 
     if (form.valid) {
-      doLoginUser();
+      loginUser();
 
       setTimeout(() => {
+        setUserDetails(form.username);
         navigation.navigate(POSTS_FEED_SCREEN);
       }, 3000);
     } else {
@@ -100,8 +107,9 @@ class LoginScreen extends Component {
 
 LoginScreen.propTypes = {
   onFieldValueChange: PropTypes.func.isRequired,
-  doLoginUser: PropTypes.func.isRequired,
+  loginUser: PropTypes.func.isRequired,
   doSetFormSubmitted: PropTypes.func.isRequired,
+  setUserDetails: PropTypes.func.isRequired,
 
   pending: PropTypes.bool.isRequired,
   form: PropTypes.shape({
@@ -127,8 +135,10 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   {
-    doLoginUser: loginUser,
+    loginUser: doLoginUser,
     onFieldValueChange: fieldValueChange,
     doSetFormSubmitted: setFormSubmitted,
+
+    setUserDetails: doSetUserDetails,
   }
 )(LoginScreen);
