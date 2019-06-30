@@ -83,7 +83,7 @@ function mapStateToProps(state) {
   return {
     friends: state.friends.friendsList,
     friendsRequests: state.friends.friendsRequests,
-    pending: state.pending,
+    pending: state.friends.pending,
   };
 }
 

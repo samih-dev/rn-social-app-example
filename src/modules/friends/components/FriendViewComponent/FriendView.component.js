@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import PropTypes from 'prop-types';
+import moment from 'moment-timezone';
 
 import { ActionButton } from '../../../../shared/components/buttons';
 
@@ -20,6 +21,7 @@ const styles = StyleSheet.create({
   },
   txtUsername: {
     fontSize: 16,
+    marginBottom: 3,
   },
 });
 
@@ -38,6 +40,7 @@ const FriendView = ({ username, askedDate, acceptDate, onFriendAccept, onFriendD
         <Text style={styles.txtUsername} numberOfLines={1}>
           {username}
         </Text>
+        {isFriendRequestView && <Text>{moment(askedDate).format('L')}</Text>}
       </View>
       {isFriendRequestView && (
         <View style={[styles.section, styles.sectionBtns]}>
