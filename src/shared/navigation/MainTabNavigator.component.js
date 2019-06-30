@@ -1,18 +1,25 @@
 import React from 'react';
+import { View, TouchableWithoutFeedback, Platform } from 'react-native';
 import { createBottomTabNavigator, createStackNavigator } from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import Ionicon from 'react-native-vector-icons/Ionicons';
 
 import { AppColors } from '../../constants/theme';
 
-import { POSTS_FEED_SCREEN, FRIENDS_SCREEN, PROFILE_SCREEN } from '../../constants/screenNames';
+import {
+  POSTS_FEED_SCREEN,
+  FRIENDS_SCREEN,
+  FRIENDS_SEARCH_SCREEN,
+  PROFILE_SCREEN,
+} from '../../constants/screenNames';
 
 import { PostsFeedScreen } from '../../modules/posts';
-import { FriendsListScreen } from '../../modules/friends';
+import { FriendsListScreen, FriendsSearchScreen } from '../../modules/friends';
 import { ProfileScreen } from '../../modules/user';
 
 const iconSize = 24;
 
-const getNavigationOption = ({ label, iconName: icon }) => {
+const getTabNavigationOption = ({ label, iconName: icon }) => {
   return {
     tabBarLabel: label,
     // eslint-disable-next-line react/prop-types
@@ -22,7 +29,7 @@ const getNavigationOption = ({ label, iconName: icon }) => {
 
 const getScreenStackNavKey = screenKey => `${screenKey}_STACK_NAV`;
 
-const getStackNavForScreen = (screenKey, screenComponent) => {
+const getStackNavForScreen = (screenKey, screenComponent, additonalScreensConfigList = {}) => {
   return createStackNavigator({
     [`${getScreenStackNavKey(screenKey)}`]: {
       screen: screenComponent,
@@ -30,6 +37,7 @@ const getStackNavForScreen = (screenKey, screenComponent) => {
         header: null,
       },
     },
+    ...additonalScreensConfigList,
   });
 };
 
@@ -37,28 +45,41 @@ const screenTitles = {
   postsFeed: 'Feed',
   friends: 'Friends',
   profile: 'Profile',
+  friendsSearch: 'Search Friends',
 };
 
 const PostFeedStackNav = getStackNavForScreen(POSTS_FEED_SCREEN, PostsFeedScreen);
-const FriendsStackNav = getStackNavForScreen(FRIENDS_SCREEN, FriendsListScreen);
+
+const FriendsStackNav = getStackNavForScreen(FRIENDS_SCREEN, FriendsListScreen, {
+  [FRIENDS_SEARCH_SCREEN]: {
+    screen: FriendsSearchScreen,
+    navigationOptions: {
+      header: null,
+    },
+  },
+});
+
 const ProfileStackNav = getStackNavForScreen(PROFILE_SCREEN, ProfileScreen);
 
 const tabsMainNavigator = createBottomTabNavigator(
   {
     [POSTS_FEED_SCREEN]: {
       screen: PostFeedStackNav,
-      navigationOptions: getNavigationOption({
+      navigationOptions: getTabNavigationOption({
         label: screenTitles.postsFeed,
         iconName: 'view-day',
       }),
     },
     [FRIENDS_SCREEN]: {
       screen: FriendsStackNav,
-      navigationOptions: getNavigationOption({ label: screenTitles.friends, iconName: 'group' }),
+      navigationOptions: getTabNavigationOption({ label: screenTitles.friends, iconName: 'group' }),
     },
     [PROFILE_SCREEN]: {
       screen: ProfileStackNav,
-      navigationOptions: getNavigationOption({ label: screenTitles.profile, iconName: 'person' }),
+      navigationOptions: getTabNavigationOption({
+        label: screenTitles.profile,
+        iconName: 'person',
+      }),
     },
   },
   {
@@ -107,6 +128,24 @@ export default createStackNavigator({
         case `${getScreenStackNavKey(FRIENDS_SCREEN)}`:
           screenNavOptions = {
             title: screenTitles.friends,
+            headerRight: (
+              <View style={{ marginRight: 8 }}>
+                <TouchableWithoutFeedback
+                  onPress={() => navigation.navigate(FRIENDS_SEARCH_SCREEN)}
+                >
+                  <Ionicon
+                    name={Platform.OS === 'ios' ? 'ios-search' : 'md-search'}
+                    color={AppColors.headerIconColor}
+                    size={30}
+                  />
+                </TouchableWithoutFeedback>
+              </View>
+            ),
+          };
+          break;
+        case FRIENDS_SEARCH_SCREEN:
+          screenNavOptions = {
+            title: screenTitles.friendsSearch,
           };
           break;
         case `${getScreenStackNavKey(PROFILE_SCREEN)}`:

@@ -31,11 +31,16 @@ const btnAcceptStyles = {
   },
 };
 
-const FriendView = ({ username, askedDate, acceptDate, onFriendAccept, onFriendDeny }) => {
+const FriendView = ({
+  username,
+  askedDate,
+  acceptDate,
+  config: { onFriendAccept, onFriendDeny, styleOpts },
+}) => {
   const isFriendRequestView = !!acceptDate === false;
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, styleOpts.container]}>
       <View style={styles.section}>
         <Text style={styles.txtUsername} numberOfLines={1}>
           {username}
@@ -70,9 +75,11 @@ FriendView.propTypes = {
   username: PropTypes.string.isRequired,
   askedDate: PropTypes.instanceOf(Date).isRequired,
   acceptDate: PropTypes.instanceOf(Date),
-
-  onFriendAccept: PropTypes.func.isRequired,
-  onFriendDeny: PropTypes.func.isRequired,
+  config: PropTypes.shape({
+    onFriendAccept: PropTypes.func.isRequired,
+    onFriendDeny: PropTypes.func.isRequired,
+    styleOpts: PropTypes.object,
+  }).isRequired,
 };
 
 FriendView.defaultProps = {

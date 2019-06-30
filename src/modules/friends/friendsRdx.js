@@ -2,6 +2,8 @@ import { FriendModel } from './models';
 
 // #region actions names
 const FRIENDS_FETCH_LIST = 'FRIENDS_FETCH_LIST';
+// const FRIENDS_ACCEPT_REQUEST = 'FRIENDS_ACCEPT_REQUEST';
+// const FRIENDS_DENY_REQUEST = 'FRIENDS_DENY_REQUEST';
 // #endregion actions names
 
 // #region reducer
@@ -34,4 +36,10 @@ export function getFriendsList(username) {
     type: FRIENDS_FETCH_LIST,
   };
 }
+
+export function acceptRequest(userId) {
+  // todo after connecting to API
+}
+
+export function denyRequest(userId) {}
 // #endregion actions createors

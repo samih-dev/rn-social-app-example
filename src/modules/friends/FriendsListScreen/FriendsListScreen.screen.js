@@ -20,7 +20,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: AppColors.greenLight,
   },
+
+  noContent: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 45,
+  },
+  txtNoContent: {
+    fontWeight: 'bold',
+  },
 });
+
+const friendViewStylesOpts = {
+  container: {
+    paddingLeft: 5,
+    borderLeftWidth: 3,
+    borderLeftColor: AppColors.mainColor,
+    marginTop: 5,
+    marginBottom: 5,
+  },
+};
 
 class FriendsListScreen extends Component {
   componentDidMount() {
@@ -40,12 +59,33 @@ class FriendsListScreen extends Component {
     );
   };
 
+  renderNoContent = section => {
+    if (section.data.length === 0) {
+      return (
+        <View style={styles.noContent}>
+          <Text style={styles.txtNoContent}>{section.noDataMessage}</Text>
+        </View>
+      );
+    }
+    return null;
+  };
+
   render() {
     const { pending, friends, friendsRequests } = this.props;
 
     const sectionListData = [
-      { title: 'Friends Requests', bgColor: AppColors.orange, data: friendsRequests },
-      { title: 'Friends List', bgColor: AppColors.greenLight, data: friends },
+      {
+        title: 'Friends Requests',
+        bgColor: AppColors.orange,
+        data: friendsRequests,
+        noDataMessage: 'No Friends Requests!!',
+      },
+      {
+        title: 'Friends List',
+        bgColor: AppColors.greenLight,
+        data: friends,
+        noDataMessage: 'No Friends Yet, start searching!!',
+      },
     ];
 
     if (pending) {
@@ -58,11 +98,15 @@ class FriendsListScreen extends Component {
           sections={sectionListData}
           keyExtractor={friendModel => friendModel.username}
           renderSectionHeader={this.renderSection}
+          renderSectionFooter={({ section }) => this.renderNoContent(section)}
           renderItem={({ item: friendModel }) => (
             <FriendView
               {...friendModel}
-              onFriendAccept={this.onFriendAccept}
-              onFriendDeny={this.onFriendDeny}
+              config={{
+                styleOpts: friendViewStylesOpts,
+                onFriendAccept: this.onFriendAccept,
+                onFriendDeny: this.onFriendDeny,
+              }}
             />
           )}
         />
