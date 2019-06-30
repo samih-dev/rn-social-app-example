@@ -28,7 +28,7 @@ const AppColors = {
   black,
   red,
   white,
-  lightGray,
+  grayLight: lightGray,
   lightWhite,
   orange,
   greenLight,

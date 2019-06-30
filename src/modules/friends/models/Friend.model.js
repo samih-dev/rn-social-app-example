@@ -1,6 +1,6 @@
 export class FriendModel {
-  constructor({ name, askedDate, acceptDate }) {
-    this.name = name;
+  constructor({ username, askedDate, acceptDate }) {
+    this.username = username;
     this.askedDate = askedDate;
     this.acceptDate = acceptDate;
   }

@@ -1,17 +1,19 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, View } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { AppColors } from '../../../constants/theme';
 
-const ActionButton = ({ config: { icon, label, onPress } }) => {
+const ActionButton = ({ config: { icon, label, onPress, styleOpts } }) => {
   const iconName = Platform.OS === 'ios' ? `ios-${icon}` : `md-${icon}`;
 
   return (
-    <Icon.Button name={iconName} backgroundColor={AppColors.blue} onPress={onPress}>
-      {label}
-    </Icon.Button>
+    <View style={styleOpts ? styleOpts.container : {}}>
+      <Icon.Button name={iconName} backgroundColor={AppColors.blue} onPress={onPress}>
+        {label}
+      </Icon.Button>
+    </View>
   );
 };
 
@@ -20,6 +22,9 @@ ActionButton.propTypes = {
     icon: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
     onPress: PropTypes.func.isRequired,
+    styleOpts: PropTypes.shape({
+      container: PropTypes.object,
+    }),
   }).isRequired,
 };
 

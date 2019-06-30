@@ -1,4 +1,4 @@
-import { UserModel } from '../../modules/user/models';
+import { UserModel } from './models';
 
 // #region actions names
 const USER_SET_DETAILS = 'USER_SET_DETAILS';

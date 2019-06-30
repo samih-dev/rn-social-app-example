@@ -1,4 +1,4 @@
-import { PostModel, PostFormModel } from '../../modules/posts/models';
+import { PostModel, PostFormModel } from './models';
 
 // #region actions names
 const POSTS_CREATE_NEW = 'POSTS_CREATE_NEW';
