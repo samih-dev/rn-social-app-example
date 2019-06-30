@@ -9,7 +9,7 @@ import { screenMainContentSS } from '../../../constants/theme';
 import { PostModel, PostFormModel } from '../models';
 import { UserModel } from '../../user/models';
 
-import { createNewPost, formValueChange } from '../../../shared/redux/postsRdx';
+import { createNewPost, formValueChange } from '../postsRdx';
 
 import styles from './PostsFeedScreen.styles';
 
@@ -18,8 +18,6 @@ class PostsFeedScreen extends Component {
     const { form, user, createPost, onFormValueChange } = this.props;
     if (form.valid) {
       createPost(user.username, form.value);
-      // todo set submitted to false, and clear value --> reset form state
-      // do this on the reducer so as it should be the same effect from all places
     } else {
       // todo set submitted to true
       onFormValueChange('submitted', true);

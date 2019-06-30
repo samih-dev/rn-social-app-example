@@ -9,13 +9,9 @@ import { ActionButton } from '../../../shared/components/buttons';
 import { Loader } from '../../../shared/components/misc';
 import { POSTS_FEED_SCREEN } from '../../../constants/screenNames';
 
-import {
-  loginUser as doLoginUser,
-  fieldValueChange,
-  setFormSubmitted,
-} from '../../../shared/redux/authRdx';
+import { loginUser as doLoginUser, fieldValueChange, setFormSubmitted } from '../authRdx';
 
-import { setUserDetails as doSetUserDetails } from '../../../shared/redux/userRdx';
+import { setUserDetails as doSetUserDetails } from '../../user/userRdx';
 
 import styles from './LoginScreen.styles';
 
