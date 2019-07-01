@@ -13,16 +13,16 @@ class FriendsSearchScreen extends Component {
 
   render() {
     const { friends } = this.props;
+
     return (
-      <View styles={screenMainContentSS.styles}>
-        <FlatList
-          data={friends}
-          keyExtractor={friendModel => friendModel.username}
-          renderItem={({ item: friendModel }) => (
-            <FriendView {...friendModel} config={{ onFriendAdd: this.onFriendAdd }} />
-          )}
-        ></FlatList>
-      </View>
+      <FlatList
+        contentContainerStyle={screenMainContentSS.styles}
+        data={friends}
+        keyExtractor={friendModel => friendModel.username}
+        renderItem={({ item: friendModel }) => (
+          <FriendView {...friendModel} config={{ onFriendAdd: this.onFriendAdd }} />
+        )}
+      ></FlatList>
     );
   }
 }

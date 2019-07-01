@@ -4,6 +4,7 @@ import { FriendModel } from './models';
 const FRIENDS_FETCH_LIST = 'FRIENDS_FETCH_LIST';
 // const FRIENDS_ACCEPT_REQUEST = 'FRIENDS_ACCEPT_REQUEST';
 // const FRIENDS_DENY_REQUEST = 'FRIENDS_DENY_REQUEST';
+// const FRIENDS_ADD_REQUEST = 'FRIENDS_ADD_REQUEST';
 // #endregion actions names
 
 // #region reducer
