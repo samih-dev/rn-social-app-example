@@ -31,16 +31,6 @@ const styles = StyleSheet.create({
   },
 });
 
-const friendViewStylesOpts = {
-  container: {
-    paddingLeft: 5,
-    borderLeftWidth: 3,
-    borderLeftColor: AppColors.mainColor,
-    marginTop: 5,
-    marginBottom: 5,
-  },
-};
-
 class FriendsListScreen extends Component {
   componentDidMount() {
     const { getFriendsList } = this.props;
@@ -103,7 +93,6 @@ class FriendsListScreen extends Component {
             <FriendView
               {...friendModel}
               config={{
-                styleOpts: friendViewStylesOpts,
                 onFriendAccept: this.onFriendAccept,
                 onFriendDeny: this.onFriendDeny,
               }}
