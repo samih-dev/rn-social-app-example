@@ -61,7 +61,7 @@ class LoginScreen extends Component {
   };
 
   render() {
-    const { navigation, pending, form, doRedirectToMainScreen } = this.props;
+    const { pending, form, doRedirectToMainScreen } = this.props;
 
     if (doRedirectToMainScreen) {
       // navigation.navigation(POSTS_FEED_SCREEN);
