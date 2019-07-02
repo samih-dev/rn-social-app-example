@@ -1,9 +1,13 @@
 import { cloneDeep } from 'lodash';
 
 // #region actions names
-const LOGIN_USER = 'LOGIN_USER';
-const LOGIN_FORM_UPDATE = 'LOGIN_FORM_UPDATE';
-const LOGIN_FORM_SET_SUMITTED = 'LOGIN_FORM_SET_SUMITTED';
+const AUTH_USER = 'AUTH_USER';
+const AUTH_USER_SUCCESS = 'AUTH_USER_SUCCESS';
+const AUTH_USER_FAIL = 'AUTH_USER_FAIL';
+
+const AUTH_FORM_UPDATE = 'AUTH_FORM_UPDATE';
+const AUTH_FORM_SET_SUMITTED = 'AUTH_FORM_SET_SUMITTED';
+const AUTH_SET_AUTH_TOKEN = 'AUTH_SET_AUTH_TOKEN';
 
 // #endregion actions names
 
@@ -11,7 +15,8 @@ const LOGIN_FORM_SET_SUMITTED = 'LOGIN_FORM_SET_SUMITTED';
 const INIT_STATE = {
   authenticated: false,
   pending: false,
-
+  authToken: '',
+  doRedirectToMainScreen: false,
   form: {
     username: '',
     password: '',
@@ -22,20 +27,42 @@ const INIT_STATE = {
 
 export default function authReducer(state = INIT_STATE, { type, payload }) {
   switch (type) {
-    case LOGIN_USER:
+    case AUTH_USER:
       return onLogin(state);
-    case LOGIN_FORM_UPDATE:
+    case AUTH_USER_SUCCESS:
+      return onLoginSuccess(state, payload);
+    case AUTH_USER_FAIL:
+      return onLoginFail(state, payload);
+
+    case AUTH_FORM_UPDATE:
       return onFormUpdate(state, payload);
-    case LOGIN_FORM_SET_SUMITTED:
+    case AUTH_FORM_SET_SUMITTED:
       return onSetFormSubmitted(state, payload);
+    case AUTH_SET_AUTH_TOKEN:
+      return onSetAuthToken(payload);
     default:
       return state;
   }
 }
 
 function onLogin(prevState) {
-  const state = cloneDeep(prevState);
-  state.pending = true;
+  // const state = cloneDeep(prevState);
+  const state = { ...prevState, pending: true };
+  return state;
+}
+
+function onLoginSuccess(prevState, { data: { token } }) {
+  const state = {
+    ...prevState,
+    authToken: token,
+    pending: false,
+    doRedirectToMainScreen: true,
+  };
+  return state;
+}
+
+function onLoginFail(prevState) {
+  const state = { ...prevState, pending: false, doRedirectToMainScreen: false };
   return state;
 }
 
@@ -55,12 +82,17 @@ function onSetFormSubmitted(prevState, { value }) {
   state.form.submitted = value;
   return state;
 }
+
+function onSetAuthToken(prevState, { token }) {
+  const state = { ...prevState, authToken: token };
+  return state;
+}
 // #endregion reducer
 
 // #region actions createors
 export function fieldValueChange(fieldName, value) {
   return {
-    type: LOGIN_FORM_UPDATE,
+    type: AUTH_FORM_UPDATE,
     payload: {
       fieldName,
       value,
@@ -68,17 +100,36 @@ export function fieldValueChange(fieldName, value) {
   };
 }
 
-export function loginUser() {
+export function loginUser({ username, password }) {
   return {
-    type: LOGIN_USER,
+    type: AUTH_USER,
+    payload: {
+      request: {
+        url: '/auth/loginOrRegister',
+        method: 'post',
+        data: {
+          username,
+          password,
+        },
+      },
+    },
   };
 }
 
 export function setFormSubmitted(value) {
   return {
-    type: LOGIN_FORM_SET_SUMITTED,
+    type: AUTH_FORM_SET_SUMITTED,
     payload: {
       value,
+    },
+  };
+}
+
+export function setAuthToken(value) {
+  return {
+    type: AUTH_SET_AUTH_TOKEN,
+    payload: {
+      token: value,
     },
   };
 }

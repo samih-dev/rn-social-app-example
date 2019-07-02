@@ -10,7 +10,7 @@ const INIT_STATE = new UserModel({ username: '' });
 export default (state = INIT_STATE, { type, payload }) => {
   switch (type) {
     case USER_SET_DETAILS:
-      return new UserModel({ username: payload.username });
+      return new UserModel(payload.user);
     default:
       return state;
   }
@@ -19,11 +19,11 @@ export default (state = INIT_STATE, { type, payload }) => {
 // #endregion reducer
 
 // #region actions createors
-export function setUserDetails(username) {
+export function setUserDetails(user) {
   return {
     type: USER_SET_DETAILS,
     payload: {
-      username,
+      user,
     },
   };
 }

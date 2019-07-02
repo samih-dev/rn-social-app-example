@@ -46,19 +46,26 @@ class LoginScreen extends Component {
     const { navigation, form, loginUser, doSetFormSubmitted, setUserDetails } = this.props;
 
     if (form.valid) {
-      loginUser();
-
-      setTimeout(() => {
-        setUserDetails(form.username);
+      const { username, password } = form;
+      loginUser({
+        username,
+        password,
+      }).then(({ payload: { data: { user } } }) => {
+        setUserDetails(user);
         navigation.navigate(POSTS_FEED_SCREEN);
-      }, 3000);
+      });
+      // .catch(err => ); if I had handled, I'll be showing toast but handling it from redux state not here.
     } else {
       doSetFormSubmitted(true);
     }
   };
 
   render() {
-    const { pending, form } = this.props;
+    const { navigation, pending, form, doRedirectToMainScreen } = this.props;
+
+    if (doRedirectToMainScreen) {
+      // navigation.navigation(POSTS_FEED_SCREEN);
+    }
 
     const { username, password, submitted } = form;
 
@@ -108,6 +115,7 @@ LoginScreen.propTypes = {
   setUserDetails: PropTypes.func.isRequired,
 
   pending: PropTypes.bool.isRequired,
+  doRedirectToMainScreen: PropTypes.bool.isRequired,
   form: PropTypes.shape({
     username: PropTypes.string.isRequired,
     password: PropTypes.string.isRequired,
@@ -118,12 +126,13 @@ LoginScreen.propTypes = {
 
 function mapStateToProps(state) {
   const {
-    auth: { authenticated, pending, form },
+    auth: { authenticated, pending, form, doRedirectToMainScreen },
   } = state;
 
   return {
     authenticated,
     pending,
+    doRedirectToMainScreen,
     form,
   };
 }
