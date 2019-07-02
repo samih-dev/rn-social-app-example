@@ -1,23 +1,44 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList } from 'react-native';
+import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { screenMainContentSS } from '../../../constants/theme';
 
+import { Loader } from '../../../shared/components/misc';
+
 import { FriendView } from '../components';
 import { FriendModel } from '../models';
+import {
+  friendRequest as doFriendRequest,
+  getNonFriendsList as doGetNonFriendsList,
+} from '../friendsRdx';
+
+import { UserModel } from '../../user/models';
 
 class FriendsSearchScreen extends Component {
+  componentDidMount() {
+    const {
+      user: { id: userId, friendsIds, usersIdsWithRequest },
+      getNonFriendsList,
+    } = this.props;
+
+    getNonFriendsList(userId, friendsIds, usersIdsWithRequest);
+  }
+
   onFriendAdd = () => {};
 
   render() {
-    const { friends } = this.props;
+    const { nonFriends, pending } = this.props;
+
+    if (pending) {
+      return <Loader message="loading..." />;
+    }
 
     return (
       <FlatList
         contentContainerStyle={screenMainContentSS.styles}
-        data={friends}
+        data={nonFriends}
         keyExtractor={friendModel => friendModel.username}
         renderItem={({ item: friendModel }) => (
           <FriendView {...friendModel} config={{ onFriendAdd: this.onFriendAdd }} />
@@ -28,16 +49,28 @@ class FriendsSearchScreen extends Component {
 }
 
 FriendsSearchScreen.propTypes = {
-  friends: PropTypes.arrayOf(PropTypes.instanceOf(FriendModel)).isRequired,
+  nonFriends: PropTypes.arrayOf(PropTypes.instanceOf(FriendModel)).isRequired,
+  pending: PropTypes.bool.isRequired,
+  user: PropTypes.instanceOf(UserModel).isRequired,
+
+  getNonFriendsList: PropTypes.func.isRequired,
+  friendRequest: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
+  const { pending, nonFriends } = state.friends;
   return {
-    friends: state.friends.friendsList,
+    nonFriends,
+    pending,
+
+    user: state.user,
   };
 }
 
 export default connect(
   mapStateToProps,
-  {}
+  {
+    getNonFriendsList: doGetNonFriendsList,
+    friendRequest: doFriendRequest,
+  }
 )(FriendsSearchScreen);

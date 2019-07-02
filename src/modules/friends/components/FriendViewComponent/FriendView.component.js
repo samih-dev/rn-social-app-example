@@ -41,10 +41,10 @@ const btnAcceptStyles = {
 const FriendView = ({
   username,
   askedDate,
-  acceptDate,
+  isApproved,
   config: { onFriendAccept, onFriendDeny, onFriendAdd, styleOpts },
 }) => {
-  const isFriendRequestView = !!acceptDate === false;
+  const isFriendRequestView = !!isApproved === false;
   const isFriendAddView = !!onFriendAdd;
 
   return (
@@ -95,17 +95,13 @@ const FriendView = ({
 FriendView.propTypes = {
   username: PropTypes.string.isRequired,
   askedDate: PropTypes.instanceOf(Date).isRequired,
-  acceptDate: PropTypes.instanceOf(Date),
+  isApproved: PropTypes.bool.isRequired,
   config: PropTypes.shape({
     onFriendAccept: PropTypes.func,
     onFriendDeny: PropTypes.func,
     onFriendAdd: PropTypes.func,
     styleOpts: PropTypes.object,
   }).isRequired,
-};
-
-FriendView.defaultProps = {
-  acceptDate: undefined,
 };
 
 export { FriendView };

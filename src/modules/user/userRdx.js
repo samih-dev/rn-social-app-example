@@ -1,4 +1,5 @@
 import { UserModel } from './models';
+import { FRIENDS_REQUEST_SUCCESS } from '../friends';
 
 // #region actions names
 const USER_SET_DETAILS = 'USER_SET_DETAILS';
@@ -11,6 +12,11 @@ export default (state = INIT_STATE, { type, payload }) => {
   switch (type) {
     case USER_SET_DETAILS:
       return new UserModel(payload.user);
+    case FRIENDS_REQUEST_SUCCESS:
+      return new UserModel({
+        ...state,
+        usersIdsWithRequest: [payload.data, state.usersIdsWithRequest],
+      });
     default:
       return state;
   }

@@ -5,12 +5,13 @@ import { connect } from 'react-redux';
 
 import { Loader } from '../../../shared/components/misc';
 
-import { getFriendsList as doGetFriendsList } from '../friendsRdx';
+import { getFriendsAndFriendsRequestsList as doGetFriendsAndFriendsRequestsList } from '../friendsRdx';
 import { FriendModel } from '../models';
 
 import { screenMainContentSS, AppColors } from '../../../constants/theme';
 
 import { FriendView } from '../components';
+import { UserModel } from '../../user/models';
 
 const styles = StyleSheet.create({
   sectionHeader: {
@@ -33,8 +34,8 @@ const styles = StyleSheet.create({
 
 class FriendsListScreen extends Component {
   componentDidMount() {
-    const { getFriendsList } = this.props;
-    getFriendsList();
+    const { getFriendsAndFriendsRequestsList, user } = this.props;
+    getFriendsAndFriendsRequestsList(user.id);
   }
 
   onFriendAccept = username => {};
@@ -63,6 +64,10 @@ class FriendsListScreen extends Component {
   render() {
     const { pending, friends, friendsRequests } = this.props;
 
+    if (pending) {
+      return <Loader />;
+    }
+
     const sectionListData = [
       {
         title: 'Friends Requests',
@@ -77,10 +82,6 @@ class FriendsListScreen extends Component {
         noDataMessage: 'No Friends Yet, start searching!!',
       },
     ];
-
-    if (pending) {
-      return <Loader />;
-    }
 
     return (
       <View style={screenMainContentSS.styles}>
@@ -106,10 +107,11 @@ class FriendsListScreen extends Component {
 
 FriendsListScreen.propTypes = {
   pending: PropTypes.bool.isRequired,
-  getFriendsList: PropTypes.func.isRequired,
+  getFriendsAndFriendsRequestsList: PropTypes.func.isRequired,
 
   friends: PropTypes.arrayOf(PropTypes.instanceOf(FriendModel)).isRequired,
   friendsRequests: PropTypes.arrayOf(PropTypes.instanceOf(FriendModel)).isRequired,
+  user: PropTypes.instanceOf(UserModel).isRequired,
 };
 
 function mapStateToProps(state) {
@@ -117,12 +119,14 @@ function mapStateToProps(state) {
     friends: state.friends.friendsList,
     friendsRequests: state.friends.friendsRequests,
     pending: state.friends.pending,
+
+    user: state.user,
   };
 }
 
 export default connect(
   mapStateToProps,
   {
-    getFriendsList: doGetFriendsList,
+    getFriendsAndFriendsRequestsList: doGetFriendsAndFriendsRequestsList,
   }
 )(FriendsListScreen);
