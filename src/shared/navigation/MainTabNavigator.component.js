@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TouchableWithoutFeedback, Platform } from 'react-native';
 import { createBottomTabNavigator, createStackNavigator } from 'react-navigation';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+// import Icon from 'react-native-vector-icons/MaterialIcons';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 
 import { AppColors, headerSS } from '../../constants/theme';
@@ -24,7 +24,7 @@ const getTabNavigationOption = ({ label, iconName: icon }) => {
   return {
     tabBarLabel: label,
     // eslint-disable-next-line react/prop-types
-    tabBarIcon: ({ tintColor }) => <Icon name={icon} color={tintColor} size={iconSize} />,
+    tabBarIcon: ({ tintColor }) => <Ionicon name={icon} color={tintColor} size={iconSize} />,
   };
 };
 
@@ -69,18 +69,18 @@ const tabsMainNavigator = createBottomTabNavigator(
       screen: PostFeedStackNav,
       navigationOptions: getTabNavigationOption({
         label: screenTitles.postsFeed,
-        iconName: 'view-day',
+        iconName: 'md-paper',
       }),
     },
     [FRIENDS_SCREEN]: {
       screen: FriendsStackNav,
-      navigationOptions: getTabNavigationOption({ label: screenTitles.friends, iconName: 'group' }),
+      navigationOptions: getTabNavigationOption({ label: screenTitles.friends, iconName: 'md-people' }),
     },
     [PROFILE_SCREEN]: {
       screen: ProfileStackNav,
       navigationOptions: getTabNavigationOption({
         label: screenTitles.profile,
-        iconName: 'person',
+        iconName: 'md-contact',
       }),
     },
   },
@@ -180,3 +180,4 @@ export default createStackNavigator({
     },
   },
 });
+
