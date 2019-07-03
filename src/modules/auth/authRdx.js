@@ -17,6 +17,7 @@ const INIT_STATE = {
   pending: false,
   authToken: '',
   doRedirectToMainScreen: false,
+  errorOnLogin: false,
   form: {
     username: '',
     password: '',
@@ -56,13 +57,14 @@ function onLoginSuccess(prevState, { data: { token } }) {
     ...prevState,
     authToken: token,
     pending: false,
+    errorOnLogin: false,
     doRedirectToMainScreen: true,
   };
   return state;
 }
 
 function onLoginFail(prevState) {
-  const state = { ...prevState, pending: false, doRedirectToMainScreen: false };
+  const state = { ...prevState, pending: false, errorOnLogin: true, doRedirectToMainScreen: false };
   return state;
 }
 

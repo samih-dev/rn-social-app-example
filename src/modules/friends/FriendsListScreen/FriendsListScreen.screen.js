@@ -5,7 +5,11 @@ import { connect } from 'react-redux';
 
 import { Loader } from '../../../shared/components/misc';
 
-import { getFriendsAndFriendsRequestsList as doGetFriendsAndFriendsRequestsList } from '../friendsRdx';
+import {
+  getFriendsAndFriendsRequestsList as doGetFriendsAndFriendsRequestsList,
+  acceptRequest as doAcceptRequest,
+  denyRequest as doDenyRequest,
+} from '../friendsRdx';
 import { FriendModel } from '../models';
 
 import { screenMainContentSS, AppColors } from '../../../constants/theme';
@@ -33,14 +37,40 @@ const styles = StyleSheet.create({
 });
 
 class FriendsListScreen extends Component {
-  componentDidMount() {
-    const { getFriendsAndFriendsRequestsList, user } = this.props;
-    getFriendsAndFriendsRequestsList(user.id);
+  constructor(props) {
+    super(props);
+    this.navFocEvtSub = null;
   }
 
-  onFriendAccept = username => {};
+  componentDidMount() {
+    const { navigation } = this.props;
+    this.navFocEvtSub = navigation.addListener('didFocus', this.loadData);
+  }
 
-  onFriendDeny = username => {};
+  componentWillUnmount = () => {
+    this.navFocEvtSub.remove();
+  };
+
+  loadData = () => {
+    const { getFriendsAndFriendsRequestsList, user } = this.props;
+    getFriendsAndFriendsRequestsList(user.id);
+  };
+
+  onFriendAccept = friendId => {
+    const {
+      acceptRequest,
+      user: { id: userId },
+    } = this.props;
+    acceptRequest(userId, friendId);
+  };
+
+  onFriendDeny = friendId => {
+    const {
+      denyRequest,
+      user: { id: userId },
+    } = this.props;
+    denyRequest(userId, friendId);
+  };
 
   renderSection = ({ section: { title, bgColor } }) => {
     return (
@@ -107,11 +137,13 @@ class FriendsListScreen extends Component {
 
 FriendsListScreen.propTypes = {
   pending: PropTypes.bool.isRequired,
-  getFriendsAndFriendsRequestsList: PropTypes.func.isRequired,
-
   friends: PropTypes.arrayOf(PropTypes.instanceOf(FriendModel)).isRequired,
   friendsRequests: PropTypes.arrayOf(PropTypes.instanceOf(FriendModel)).isRequired,
   user: PropTypes.instanceOf(UserModel).isRequired,
+
+  getFriendsAndFriendsRequestsList: PropTypes.func.isRequired,
+  acceptRequest: PropTypes.func.isRequired,
+  denyRequest: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -128,5 +160,7 @@ export default connect(
   mapStateToProps,
   {
     getFriendsAndFriendsRequestsList: doGetFriendsAndFriendsRequestsList,
+    acceptRequest: doAcceptRequest,
+    denyRequest: doDenyRequest,
   }
 )(FriendsListScreen);

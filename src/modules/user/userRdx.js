@@ -1,5 +1,9 @@
 import { UserModel } from './models';
-import { FRIENDS_REQUEST_SUCCESS } from '../friends';
+import {
+  FRIENDS_REQUEST_SUCCESS,
+  FRIENDS_ACCEPT_REQUEST_SUCCESS,
+  FRIENDS_DENY_REQUEST_SUCCESS,
+} from '../friends';
 
 // #region actions names
 const USER_SET_DETAILS = 'USER_SET_DETAILS';
@@ -15,7 +19,13 @@ export default (state = INIT_STATE, { type, payload }) => {
     case FRIENDS_REQUEST_SUCCESS:
       return new UserModel({
         ...state,
-        usersIdsWithRequest: [payload.data, state.usersIdsWithRequest],
+        usersIdsWithRequest: [payload.data, ...state.usersIdsWithRequest],
+      });
+    case FRIENDS_ACCEPT_REQUEST_SUCCESS:
+    case FRIENDS_DENY_REQUEST_SUCCESS:
+      return new UserModel({
+        ...state,
+        usersIdsWithRequest: state.usersIdsWithRequest.filter(id => id !== payload.data),
       });
     default:
       return state;

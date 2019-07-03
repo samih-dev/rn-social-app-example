@@ -16,10 +16,24 @@ import { createNewPost, formValueChange, loadPosts as doPostLoad } from '../post
 import styles from './PostsFeedScreen.styles';
 
 class PostsFeedScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.navFocEvtSub = null;
+  }
+
   componentDidMount() {
+    const { navigation } = this.props;
+    this.navFocEvtSub = navigation.addListener('didFocus', this.loadData);
+  }
+
+  componentWillUnmount = () => {
+    this.navFocEvtSub.remove();
+  };
+
+  loadData = () => {
     const { postLoad, user } = this.props;
     postLoad(user.id, user.friendsIds);
-  }
+  };
 
   frmOnSubmit = () => {
     const { form, user, createPost, onFormValueChange } = this.props;

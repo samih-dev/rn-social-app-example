@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
 
 const Loader = ({ message }) => (
   <View style={styles.container}>
-    <Text>{message}</Text>
+    {!!message && <Text>{message}</Text>}
     <ActivityIndicator size="large" color={AppColors.blue} />
   </View>
 );

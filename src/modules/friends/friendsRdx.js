@@ -4,12 +4,18 @@ import { FriendModel } from './models';
 const FRIENDS_FETCH_LIST = 'FRIENDS_FETCH_LIST';
 const FRIENDS_FETCH_LIST_SUCCESS = 'FRIENDS_FETCH_LIST_SUCCESS';
 const FRIENDS_FETCH_LIST_FAIL = 'FRIENDS_FETCH_LIST_FAIL';
-// const FRIENDS_ACCEPT_REQUEST = 'FRIENDS_ACCEPT_REQUEST';
-// const FRIENDS_DENY_REQUEST = 'FRIENDS_DENY_REQUEST';
 
-const FRIENDS_REQUEST = 'FRIENDS_ADD_REQUEST';
+const FRIENDS_REQUEST = 'FRIENDS_REQUEST';
 export const FRIENDS_REQUEST_SUCCESS = 'FRIENDS_REQUEST_SUCCESS';
 const FRIENDS_REQUEST_FAIL = 'FRIENDS_REQUEST_FAIL';
+
+const FRIENDS_ACCEPT_REQUEST = 'FRIENDS_ACCEPT_REQUEST';
+export const FRIENDS_ACCEPT_REQUEST_SUCCESS = 'FRIENDS_ACCEPT_REQUEST_SUCCESS';
+const FRIENDS_ACCEPT_REQUEST_FAIL = 'FRIENDS_ACCEPT_REQUEST_FAIL';
+
+const FRIENDS_DENY_REQUEST = 'FRIENDS_DENY_REQUEST';
+export const FRIENDS_DENY_REQUEST_SUCCESS = 'FRIENDS_DENY_REQUEST_SUCCESS';
+const FRIENDS_DENY_REQUEST_FAIL = 'FRIENDS_DENY_REQUEST_FAIL';
 
 const FRIENDS_FETCH_NON_FRIENDS = 'FRIENDS_FETCH_NON_FRIENDS';
 const FRIENDS_FETCH_NON_FRIENDS_SUCCESS = 'FRIENDS_FETCH_NON_FRIENDS_SUCCESS';
@@ -37,9 +43,9 @@ export default (state = INIT_STATE, { type, payload }) => {
     case FRIENDS_FETCH_NON_FRIENDS:
       return onFriendsFetchNonFriends(state);
     case FRIENDS_FETCH_NON_FRIENDS_SUCCESS:
-      return onFriendsFetchNonFriendsSuccess(state);
+      return onFriendsFetchNonFriendsSuccess(state, payload);
     case FRIENDS_FETCH_NON_FRIENDS_FAIL:
-      return onFriendsFetchNonFriendsFail(state);
+      return onFriendsFetchNonFriendsFail(state, payload);
 
     case FRIENDS_REQUEST:
       return onFriendRequest(state);
@@ -47,6 +53,20 @@ export default (state = INIT_STATE, { type, payload }) => {
       return onFriendRequestSuccess(state, payload);
     case FRIENDS_REQUEST_FAIL:
       return onFriendRequestFail(state, payload);
+
+    case FRIENDS_ACCEPT_REQUEST:
+      return onFriendsAcceptRequest(state);
+    case FRIENDS_ACCEPT_REQUEST_SUCCESS:
+      return onFriendsAcceptRequestSuccess(state, payload);
+    case FRIENDS_ACCEPT_REQUEST_FAIL:
+      return onFriendsAcceptRequestFail(state, payload);
+
+    case FRIENDS_DENY_REQUEST:
+      return onFriendsDenyRequest(state);
+    case FRIENDS_DENY_REQUEST_SUCCESS:
+      return onFriendsDenyRequestSuccess(state, payload);
+    case FRIENDS_DENY_REQUEST_FAIL:
+      return onFriendsDenyRequestFail(state, payload);
 
     default:
       return state;
@@ -62,8 +82,13 @@ function onFriendsFetchListSuccess(prevState, { data: { list, userId } }) {
   const mappedModels = list.map(friendshipModel => {
     const { isApproved, requestDate } = friendshipModel;
 
-    if (friendshipModel.user.id !== userId) {
-      return FriendModel.createFromBeModel({ isApproved, user: friendshipModel.user, requestDate });
+    // eslint-disable-next-line no-underscore-dangle
+    if (friendshipModel.user._id !== userId) {
+      return FriendModel.createFromBeModel({
+        isApproved,
+        user: friendshipModel.user,
+        requestDate,
+      });
     }
     return FriendModel.createFromBeModel({
       isApproved,
@@ -88,7 +113,6 @@ function onFriendsFetchNonFriends(prevState) {
   return { ...prevState, pending: true };
 }
 function onFriendsFetchNonFriendsSuccess(prevState, { data }) {
-  debugger;
   return {
     ...prevState,
     pending: false,
@@ -105,11 +129,51 @@ function onFriendsFetchNonFriendsFail(prevState, payload) {
 function onFriendRequest(prevState) {
   return { ...prevState, pending: true };
 }
-function onFriendRequestSuccess(prevState, { data: userId }) {
-  return { ...prevState, pending: false, nonFriends: prevState.filter(user => user.id !== userId) };
+function onFriendRequestSuccess(prevState, { data: askedUserId }) {
+  return {
+    ...prevState,
+    pending: false,
+    nonFriends: prevState.nonFriends.filter(user => user.id !== askedUserId),
+  };
+}
+function onFriendRequestFail(prevState, payload) {
+  return { ...prevState, pending: false };
 }
 
-function onFriendRequestFail(prevState, payload) {
+function onFriendsAcceptRequest(prevState) {
+  return { ...prevState, pending: true };
+}
+function onFriendsAcceptRequestSuccess(prevState, { data: userIdAccepted }) {
+  let friendModel;
+
+  const friendsRequests = prevState.friendsRequests.filter(m => {
+    if (m.id === userIdAccepted) {
+      friendModel = m;
+      return false;
+    }
+    return true;
+  });
+
+  friendModel.isApproved = true;
+
+  const friendsList = [friendModel, ...prevState.friendsList];
+  return { ...prevState, pending: false, friendsList, friendsRequests };
+}
+function onFriendsAcceptRequestFail(prevState, payload) {
+  return { ...prevState, pending: false };
+}
+
+function onFriendsDenyRequest(prevState) {
+  return { ...prevState, pending: true };
+}
+function onFriendsDenyRequestSuccess(prevState, { data: userIdDenied }) {
+  return {
+    ...prevState,
+    pending: false,
+    friendsRequests: prevState.friendsRequests.filter(m => m.id !== userIdDenied),
+  };
+}
+function onFriendsDenyRequestFail(prevState, payload) {
   return { ...prevState, pending: false };
 }
 // #endregion reducer
@@ -133,13 +197,15 @@ export function getFriendsAndFriendsRequestsList(userId) {
 export function getNonFriendsList(userId, friendsIds, usersIdsWithRequests) {
   return {
     type: FRIENDS_FETCH_NON_FRIENDS,
-    request: {
-      method: 'post',
-      url: '/users/getNonFriends',
-      data: {
-        userId,
-        friendsIds,
-        usersIdsWithRequests,
+    payload: {
+      request: {
+        method: 'post',
+        url: '/users/getNonFriends',
+        data: {
+          userId,
+          friendsIds,
+          usersIdsWithRequests,
+        },
       },
     },
   };
@@ -148,20 +214,48 @@ export function getNonFriendsList(userId, friendsIds, usersIdsWithRequests) {
 export function friendRequest(userId, askedUserId) {
   return {
     type: FRIENDS_REQUEST,
-    request: {
-      method: 'post',
-      url: '/users/friendRequest',
-      data: {
-        userId,
-        askedUserId,
+    payload: {
+      request: {
+        method: 'post',
+        url: '/users/friendRequest',
+        data: {
+          userId,
+          askedUserId,
+        },
       },
     },
   };
 }
 
-export function acceptRequest(userId) {
-  // todo after connecting to API
+export function acceptRequest(userId, userIdToApprove) {
+  return {
+    type: FRIENDS_ACCEPT_REQUEST,
+    payload: {
+      request: {
+        url: '/users/approveFriendRequest',
+        method: 'post',
+        data: {
+          userId,
+          userIdToApprove,
+        },
+      },
+    },
+  };
 }
 
-export function denyRequest(userId) {}
+export function denyRequest(userId, userIdToDeny) {
+  return {
+    type: FRIENDS_DENY_REQUEST,
+    payload: {
+      request: {
+        url: '/users/denyFriendRequest',
+        method: 'post',
+        data: {
+          userId,
+          userIdToDeny,
+        },
+      },
+    },
+  };
+}
 // #endregion actions createors

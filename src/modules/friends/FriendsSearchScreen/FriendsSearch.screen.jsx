@@ -17,16 +17,38 @@ import {
 import { UserModel } from '../../user/models';
 
 class FriendsSearchScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.navFocEvtSub = null;
+  }
+
   componentDidMount() {
+    const { navigation } = this.props;
+
+    this.navFocEvtSub = navigation.addListener('didFocus', this.loadData);
+  }
+
+  componentWillUnmount = () => {
+    this.navFocEvtSub.remove();
+  };
+
+  loadData = () => {
     const {
       user: { id: userId, friendsIds, usersIdsWithRequest },
       getNonFriendsList,
     } = this.props;
 
     getNonFriendsList(userId, friendsIds, usersIdsWithRequest);
-  }
+  };
 
-  onFriendAdd = () => {};
+  onFriendAdd = friendIdToAsk => {
+    const {
+      friendRequest,
+      user: { id: userId },
+    } = this.props;
+
+    friendRequest(userId, friendIdToAsk);
+  };
 
   render() {
     const { nonFriends, pending } = this.props;

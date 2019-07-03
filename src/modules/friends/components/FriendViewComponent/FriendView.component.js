@@ -39,12 +39,13 @@ const btnAcceptStyles = {
 };
 
 const FriendView = ({
+  id,
   username,
   askedDate,
   isApproved,
   config: { onFriendAccept, onFriendDeny, onFriendAdd, styleOpts },
 }) => {
-  const isFriendRequestView = !!isApproved === false;
+  const isFriendRequestView = !isApproved && onFriendAccept && onFriendDeny;
   const isFriendAddView = !!onFriendAdd;
 
   return (
@@ -61,7 +62,7 @@ const FriendView = ({
             config={{
               icon: 'checkmark',
               label: 'Accept',
-              onPress: () => onFriendAccept(username),
+              onPress: () => onFriendAccept(id),
               styleOpts: btnAcceptStyles,
             }}
           ></ActionButton>
@@ -70,7 +71,7 @@ const FriendView = ({
             config={{
               icon: 'close',
               label: 'Deny',
-              onPress: () => onFriendDeny(username),
+              onPress: () => onFriendDeny(id),
             }}
           ></ActionButton>
         </View>
@@ -83,7 +84,7 @@ const FriendView = ({
             config={{
               icon: 'add',
               label: 'Add',
-              onPress: () => onFriendAdd(username),
+              onPress: () => onFriendAdd(id),
             }}
           ></ActionButton>
         </View>
@@ -93,8 +94,9 @@ const FriendView = ({
 };
 
 FriendView.propTypes = {
+  id: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
-  askedDate: PropTypes.instanceOf(Date).isRequired,
+  askedDate: PropTypes.instanceOf(Date),
   isApproved: PropTypes.bool.isRequired,
   config: PropTypes.shape({
     onFriendAccept: PropTypes.func,
@@ -102,6 +104,10 @@ FriendView.propTypes = {
     onFriendAdd: PropTypes.func,
     styleOpts: PropTypes.object,
   }).isRequired,
+};
+
+FriendView.defaultProps = {
+  askedDate: undefined,
 };
 
 export { FriendView };
