@@ -7,6 +7,7 @@ import {
 
 // #region actions names
 const USER_SET_DETAILS = 'USER_SET_DETAILS';
+const AUTH_USER_DATA_RESET = 'AUTH_USER_DATA_RESET';
 // #endregion actions names
 
 // #region reducer
@@ -16,6 +17,8 @@ export default (state = INIT_STATE, { type, payload }) => {
   switch (type) {
     case USER_SET_DETAILS:
       return new UserModel(payload.user);
+    case AUTH_USER_DATA_RESET:
+      return new UserModel({ ...INIT_STATE });
     case FRIENDS_REQUEST_SUCCESS:
       return new UserModel({
         ...state,
@@ -41,6 +44,12 @@ export function setUserDetails(user) {
     payload: {
       user,
     },
+  };
+}
+
+export function resetUserData() {
+  return {
+    type: AUTH_USER_DATA_RESET,
   };
 }
 // #endregion actions createors

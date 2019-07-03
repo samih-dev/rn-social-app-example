@@ -11,7 +11,10 @@ import { POSTS_FEED_SCREEN } from '../../../constants/screenNames';
 
 import { loginUser as doLoginUser, fieldValueChange, setFormSubmitted } from '../authRdx';
 
-import { setUserDetails as doSetUserDetails } from '../../user/userRdx';
+import {
+  setUserDetails as doSetUserDetails,
+  resetUserData as doResetUserData,
+} from '../../user/userRdx';
 
 import styles from './LoginScreen.styles';
 
@@ -35,6 +38,11 @@ class LoginScreen extends Component {
         width: '80%',
       },
     });
+  }
+
+  componentDidMount() {
+    const { resetUserData } = this.props;
+    resetUserData();
   }
 
   onIptChange = (fieldName, value) => {
@@ -113,6 +121,7 @@ LoginScreen.propTypes = {
   loginUser: PropTypes.func.isRequired,
   doSetFormSubmitted: PropTypes.func.isRequired,
   setUserDetails: PropTypes.func.isRequired,
+  resetUserData: PropTypes.func.isRequired,
 
   pending: PropTypes.bool.isRequired,
   doRedirectToMainScreen: PropTypes.bool.isRequired,
@@ -145,5 +154,6 @@ export default connect(
     doSetFormSubmitted: setFormSubmitted,
 
     setUserDetails: doSetUserDetails,
+    resetUserData: doResetUserData,
   }
 )(LoginScreen);

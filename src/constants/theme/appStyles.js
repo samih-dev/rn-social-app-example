@@ -50,4 +50,10 @@ const screenMainContentSS = StyleSheet.create({
   styles: AppStyle.screenContent,
 });
 
-export { AppStyle, screenMainContentSS };
+const headerSS = StyleSheet.create({
+  rightIconContainer: {
+    marginRight: 8,
+  },
+});
+
+export { AppStyle, screenMainContentSS, headerSS };

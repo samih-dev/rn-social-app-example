@@ -89,6 +89,7 @@ function onSetAuthToken(prevState, { token }) {
   const state = { ...prevState, authToken: token };
   return state;
 }
+
 // #endregion reducer
 
 // #region actions createors
@@ -135,4 +136,5 @@ export function setAuthToken(value) {
     },
   };
 }
+
 // #endregion actions createors

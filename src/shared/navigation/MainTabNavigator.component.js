@@ -4,13 +4,14 @@ import { createBottomTabNavigator, createStackNavigator } from 'react-navigation
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 
-import { AppColors } from '../../constants/theme';
+import { AppColors, headerSS } from '../../constants/theme';
 
 import {
   POSTS_FEED_SCREEN,
   FRIENDS_SCREEN,
   FRIENDS_SEARCH_SCREEN,
   PROFILE_SCREEN,
+  LOGIN_SCREEN,
 } from '../../constants/screenNames';
 
 import { PostsFeedScreen } from '../../modules/posts';
@@ -61,6 +62,7 @@ const FriendsStackNav = getStackNavForScreen(FRIENDS_SCREEN, FriendsListScreen, 
 
 const ProfileStackNav = getStackNavForScreen(PROFILE_SCREEN, ProfileScreen);
 
+// TABS
 const tabsMainNavigator = createBottomTabNavigator(
   {
     [POSTS_FEED_SCREEN]: {
@@ -123,6 +125,17 @@ export default createStackNavigator({
         case `${getScreenStackNavKey(POSTS_FEED_SCREEN)}`:
           screenNavOptions = {
             title: screenTitles.postsFeed,
+            headerRight: (
+              <View style={headerSS.rightIconContainer}>
+                <TouchableWithoutFeedback onPress={() => navigation.navigate(LOGIN_SCREEN)}>
+                  <Ionicon
+                    name={Platform.OS === 'ios' ? 'ios-log-out' : 'md-log-out'}
+                    color={AppColors.headerIconColor}
+                    size={30}
+                  />
+                </TouchableWithoutFeedback>
+              </View>
+            ),
           };
           break;
         case `${getScreenStackNavKey(FRIENDS_SCREEN)}`:

@@ -74,7 +74,7 @@ export default (state = INIT_STATE, { type, payload }) => {
 };
 
 function onFriendsFetchList(prevState) {
-  return { ...prevState, prending: true };
+  return { ...prevState, pending: true };
 }
 
 function onFriendsFetchListSuccess(prevState, { data: { list, userId } }) {
